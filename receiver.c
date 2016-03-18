@@ -46,7 +46,7 @@ void init(int& shmid, int& msqid, char*& sharedMemPtr)
    }
 
    // Attach to the message queue 
-   if ((msqid = msgget(key, 0644)) == -1) {  
+   if ((msqid = msgget(key, 0644 | IPC_CREAT)) == -1) {  
       perror("msgget");
       exit(1);
    }
@@ -139,7 +139,7 @@ void cleanUp(const int& shmid, const int& msqid, void* sharedMemPtr)
  */
 
 void signalHandlerFunc(int signo){
-   printf("I am in signal handle\n");  
+   printf("I am the signal handler. Everthing is cleaned up.\n");  
 	/* let Ctrl-C deallocate memory and message queue */
    cleanUp(shmid, msqid, sharedMemPtr);
    exit(0);
